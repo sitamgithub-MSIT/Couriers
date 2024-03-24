@@ -40,3 +40,28 @@ footer {
   color: #ffffff; /* White color for footer text */
   padding: 20px 0; /* Padding top and bottom */
 }
+
+/* Additional Styles for Navbar Text and Logout Button */
+.navbar-text {
+  margin-right: 15px; /* Margin for navbar text */
+}
+
+.navbar-text strong {
+  color: #000000; /* Black color for navbar text */
+}
+
+.navbar-text a.btn {
+  margin-left: 10px; /* Margin between navbar text and button */
+}
+
+@media (max-width: 767px) {
+  .navbar-text {
+    margin-right: 0; /* Remove margin for navbar text on small screens */
+    margin-bottom: 10px; /* Add margin bottom for spacing */
+  }
+
+  .navbar-text a.btn {
+    margin-left: 0; /* Remove margin for button on small screens */
+    margin-top: 10px; /* Add margin top for spacing */
+  }
+}

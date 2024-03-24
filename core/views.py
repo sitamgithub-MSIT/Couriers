@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -16,6 +17,7 @@ def homepageview(request):
     return render(request, "core/home.html")
 
 
+@login_required()
 def customerpageview(request):
     """
     Renders the customer page view.
@@ -26,9 +28,10 @@ def customerpageview(request):
     Returns:
         A rendered HTML response for the customer page.
     """
-    return render(request, "core/customer.html")
+    return render(request, "core/home.html")
 
 
+@login_required()
 def courierpageview(request):
     """
     Renders the courier page view.
@@ -39,4 +42,4 @@ def courierpageview(request):
     Returns:
         A rendered HTML response for the courier page.
     """
-    return render(request, "core/courier.html")
+    return render(request, "core/home.html")

@@ -25,7 +25,9 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#"><strong>Couriers</strong></a>
+        <a class="navbar-brand" href="/"><strong>Couriers</strong></a>
+
+        {% if not request.user.is_authenticated %}
         <button
           class="navbar-toggler"
           type="button"
@@ -37,20 +39,35 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active text-black" aria-current="page" href="#"
+              <a
+                class="nav-link text-black {% if request.GET.next != '/courier/' %}active{% endif %}"
+                aria-current="page"
+                href="/login/?next=/customer/"
                 ><bold>Customer 📦</bold></a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link active text-black" href="#"
+              <a
+                class="nav-link text-black {% if request.GET.next == '/courier/' %}active{% endif %}"
+                href="/login/?next=/courier/"
                 ><bold>Courier 🚚</bold></a
               >
             </li>
           </ul>
         </div>
+        {% else %}
+        <form class="form-inline">
+          <span class="navbar-text text-black m-3"
+            ><strong>{{ request.user.get_full_name|title }}</strong></span
+          >
+          <a class="btn btn-primary" href="/logout/">Logout</a>
+        </form>
+
+        {% endif %}
       </div>
     </nav>
 
