@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>{% block title %} {% endblock %} Couriers 🚚</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'styles/base.css' %}"
+    />
+
+    {% load bootstrap5 %} 
+    {% bootstrap_css %} 
+    {% bootstrap_javascript %} 
+    
+    {% block head %} {% endblock %}
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"><strong>Couriers</strong></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active text-black" aria-current="page" href="#"
+                ><bold>Customer 📦</bold></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active text-black" href="#"
+                ><bold>Courier 🚚</bold></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block content %}
+    <!-- Blog content goes here -->
+    {% endblock %}
+
+    <footer class="text-center mt-5">&copy; 2024 Couriers</footer>
+  </body>
+</html>

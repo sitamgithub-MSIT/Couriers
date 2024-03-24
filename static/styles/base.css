@@ -1,0 +1,42 @@
+/* Custom Styles */
+body {
+  background-color: #f5f5f5; /* Very light background color */
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: #4caf50; /* Green navbar background color */
+}
+
+.navbar-brand {
+  margin-right: 20px; /* Margin for navbar brand */
+  transition: transform 0.3s ease; /* Smooth transition for navbar brand */
+  font-size: x-large; /* Font size for navbar brand */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.1); /* Scale effect on hover for navbar brand */
+}
+
+.navbar-nav {
+  margin-left: auto; /* Move navbar elements to right */
+}
+
+.nav-item {
+  margin-left: 15px; /* Margin between navbar items */
+  transition: transform 0.3s ease; /* Smooth transition for navbar items */
+  font-size: large; /* Font size for navbar items */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav-item:hover {
+  transform: scale(1.1); /* Scale effect on hover for navbar items */
+}
+
+/* Footer Styles */
+footer {
+  background-color: #343a40; /* Dark footer background color */
+  color: #ffffff; /* White color for footer text */
+  padding: 20px 0; /* Padding top and bottom */
+}
