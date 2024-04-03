@@ -18,19 +18,14 @@
           </h4>
           <form method="POST">
             {% csrf_token %} 
-            {% bootstrap_form_errors form %} 
-            {% bootstrap_label "Email" %} 
-            {% bootstrap_field form.username show_label=False placeholder="Email" %} 
-            {% bootstrap_field form.password %}
-            <button class="btn btn-primary btn-block" type="submit">Sign In</button>
-            <p
-              class="text-center mt-3 mb-0 text-muted text-capitalize font-weight-bold text-decoration-none text-nowrap"
-            >
-              Don't have an account?
-              <a class="text-primary font-weight-bold ml-1 text-decoration-none"
-                href="/sign-up/?next={{request.GET.next}}"
-              >
-                <b>Sign Up</b>
+            {% bootstrap_form form%}
+            <button type="submit" class="btn btn-primary btn-block">
+              Sign Up
+            </button>
+            <p class="text-center mt-3">
+              Already have an account?
+              <a href="/login/?next={{request.GET.next}}">
+                <b>Sign in</b>
               </a>
             </p>
           </form>
