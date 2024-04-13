@@ -20,6 +20,17 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from core import views
 
+from core.customer import views as customer_views
+from core.courier import views as courier_views
+
+customer_urls = [
+    path("", customer_views.customerhomeview, name="customerhomeview"),
+]
+
+courier_urls = [
+    path("", courier_views.courierhomeview, name="courierhomeview"),
+]
+
 # URL patterns for the couriers project.
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,6 +39,6 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="core/login.html")),
     path("logout/", auth_views.LogoutView.as_view(next_page="/")),
     path("sign-up/", views.registerpageview, name="registerpageview"),
-    path("customer/", views.customerpageview, name="customerpageview"),
-    path("courier/", views.courierpageview, name="courierpageview"),
+    path("customer/", include((customer_urls, "customer"))),
+    path("courier/", include((courier_urls, "courier"))),
 ]
