@@ -15,4 +15,4 @@ def customerhomeview(request):
     Returns:
         A rendered HTML response for the customer page.
     """
-    return render(request, "core/home.html")
+    return render(request, "core/customer/base.html")
