@@ -28,6 +28,7 @@
                 <b>Sign in</b>
               </a>
             </p>
+            <a heref="{% url "social:begin" "facebook" %}?next={{ request.GET.next }}" class="btn btn-block btn-outline-secondary">Sign in with Facebook</a>
           </form>
         </div>
       </div>

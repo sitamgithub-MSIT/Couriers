@@ -12,3 +12,12 @@ class CoreConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "core"
+
+    def ready(self):
+        """
+        Method called when the app is ready.
+
+        This method is called when the app is ready. It imports the signals module
+        to ensure that the signals are registered when the app is loaded.
+        """
+        import core.signals

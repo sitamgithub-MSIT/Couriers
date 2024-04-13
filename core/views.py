@@ -75,7 +75,7 @@ def registerpageview(request):
             user.save()
 
             # Log the user in and redirect to the home page
-            login(request, user)
+            login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             return redirect("/")
 
     # Render the registration page with the form

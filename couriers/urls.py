@@ -16,13 +16,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from core import views
 
 # URL patterns for the couriers project.
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("social_django.urls", namespace="social")),
     path("", views.homepageview, name="homepageview"),
     path("login/", auth_views.LoginView.as_view(template_name="core/login.html")),
     path("logout/", auth_views.LogoutView.as_view(next_page="/")),
