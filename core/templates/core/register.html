@@ -1,7 +1,7 @@
-{% extends 'core/base.html' %} 
-{% block title %}Sign-in | {% endblock %} 
+{% extends 'core/base.html' %}
+{% block title %}Sign-up | {% endblock %}
 
-{% load bootstrap5 %} 
+{% load bootstrap5 %}
 
 {% block content %}
 
@@ -12,13 +12,16 @@
         <div class="card-body">
           <h4 class="text-center text-uppercase mb-3">
             <b>
-              {% if request.GET.next != '/courier/' %} Customer {% else %}
-              Courier {% endif %}
+              {% if request.GET.next != '/courier/' %} 
+              Customer
+              {% else %}
+              Courier
+              {% endif %}
             </b>
           </h4>
           <form method="POST">
             {% csrf_token %} 
-            {% bootstrap_form form%}
+            {% bootstrap_form form %}
             <button type="submit" class="btn btn-primary btn-block">
               Sign Up
             </button>

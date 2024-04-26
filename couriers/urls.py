@@ -25,6 +25,7 @@ from core.courier import views as courier_views
 
 customer_urls = [
     path("", customer_views.customerhomeview, name="customerhomeview"),
+    path("profile/", customer_views.customerprofileview, name="customerprofileview"),
 ]
 
 courier_urls = [
