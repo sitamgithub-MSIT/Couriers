@@ -33,13 +33,18 @@ def customerprofileview(request):
     """
 
     user_form = forms.UserProfileForm(instance=request.user)
+    customer_form = forms.CustomerProfileForm(instance=request.user.customer)
 
     if request.method == "POST":
         user_form = forms.UserProfileForm(request.POST, instance=request.user)
+        customer_form = forms.CustomerProfileForm(
+            request.POST, request.FILES, instance=request.user.customer
+        )
 
-        if user_form.is_valid():
+        if user_form.is_valid() and customer_form.is_valid():
             user_form.save()
+            customer_form.save()
             return redirect(reverse("customer:customerprofileview"))
 
             
-    return render(request, "core/customer/profile.html", {"user_form": user_form})
+    return render(request, "core/customer/profile.html", {"user_form": user_form, "customer_form": customer_form})
