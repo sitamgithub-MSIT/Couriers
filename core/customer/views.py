@@ -1,7 +1,12 @@
+# Django imports
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
+# Import the forms module
 from . import forms
 
 # Create your views here.
@@ -35,19 +40,38 @@ def customerprofileview(request):
 
     user_form = forms.UserProfileForm(instance=request.user)
     customer_form = forms.CustomerProfileForm(instance=request.user.customer)
+    password_form = PasswordChangeForm(request.user)
 
     if request.method == "POST":
-        user_form = forms.UserProfileForm(request.POST, instance=request.user)
-        customer_form = forms.CustomerProfileForm(
-            request.POST, request.FILES, instance=request.user.customer
-        )
 
-        if user_form.is_valid() and customer_form.is_valid():
-            user_form.save()
-            customer_form.save()
+        if request.POST.get("action") == "update_profile":
+            user_form = forms.UserProfileForm(request.POST, instance=request.user)
+            customer_form = forms.CustomerProfileForm(
+                request.POST, request.FILES, instance=request.user.customer
+            )
 
-            messages.success(request, "Profile updated successfully! ")
-            return redirect(reverse("customer:customerprofileview"))
+            if user_form.is_valid() and customer_form.is_valid():
+                user_form.save()
+                customer_form.save()
 
-            
-    return render(request, "core/customer/profile.html", {"user_form": user_form, "customer_form": customer_form})
+                messages.success(request, "Profile updated successfully! ")
+                return redirect(reverse("customer:customerprofileview"))
+
+        elif request.POST.get("action") == "update_password":
+            password_form = PasswordChangeForm(request.user, request.POST)
+
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Password updated successfully! ")
+                return redirect(reverse("customer:customerprofileview"))
+
+    return render(
+        request,
+        "core/customer/profile.html",
+        {
+            "user_form": user_form,
+            "customer_form": customer_form,
+            "password_form": password_form,
+        },
+    )
