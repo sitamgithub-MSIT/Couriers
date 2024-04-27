@@ -1,32 +1,122 @@
-{% extends 'core/customer/base.html' %}
-{% block title %}Profile | {% endblock %}
+{% extends 'core/customer/base.html' %} 
+{% block title %}Profile | {% endblock %} 
 
 {% load bootstrap5 %}
 
+{% block head %}
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"
+></script>
+
+{% endblock %} 
+
 {% block main %}
 
-<b class="text-secondary">Profile</b><br/>
+<b class="text-secondary">Profile</b><br />
 <div class="card bg-white mt-2 mb-5">
   <div class="card-body">
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %} 
-      {% bootstrap_form user_form %}
+      {% bootstrap_form user_form %} 
       {% bootstrap_form customer_form %}
-      <input type="hidden" name="action" value="update_profile"/>
+      <input type="hidden" name="action" value="update_profile" />
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
   </div>
 </div>
 
-<b class="text-secondary">Change Password</b><br/>
+<b class="text-secondary">Change Password</b><br />
 <div class="card bg-white mt-2 mb-5">
   <div class="card-body">
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %} 
       {% bootstrap_form password_form %}
-      <input type="hidden" name="action" value="update_password"/>
+      <input type="hidden" name="action" value="update_password" />
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
   </div>
 </div>
+
+<b class="text-secondary">Phone Number</b><br />
+<div class="card bg-white mt-2 mb-5">
+  <div class="card-body">
+    <div id="recaptcha-container"></div>
+
+    <div id="get-code" class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Your phone number" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">Send Code</button>
+      </div>
+    </div>
+
+    <div id="verify-code" class="input-group mb-3 d-none">
+      <input type="text" class="form-control" placeholder="Verification code" />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">Verify Code</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "firebase-api-key",
+    authDomain: "firebase-auth-domain",
+    projectId: "firebase-project-id",
+    storageBucket: "firebase-storage-bucket",
+    messagingSenderId: "firebase-messaging-sender-id",
+    appId: "firebase-app-id",
+    measurementId: "firebase-measurement-id",
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+
+  $("#get-code button").click(function () {
+    const phoneNumber = $("#get-code input").val();
+    console.log(phoneNumber);
+
+    firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      console.log(confirmationResult);
+      window.confirmationResult = confirmationResult;
+
+      $("#get-code").addClass("d-none");
+      $("#verify-code").removeClass("d-none");
+    }).catch((error) => {
+      // Error; SMS not sent
+      alert(error.message);
+    });
+  });
+
+  $("#verify-code button").click(function () {
+    const code = $("#verify-code input").val();
+    //console.log(code);
+    confirmationResult.confirm(code).then((result) => {
+    // User signed in successfully.
+    const user = result.user;
+    console.log(user.phoneNumber);
+    user.getIdToken().then((idToken) => {
+      console.log(idToken);
+    });
+    }).catch((error) => {
+    // User couldn't sign in (bad verification code?)
+    alert(error.message);
+    });
+  });
+</script>
+
+{% endblock %} 
+
+{% block footer %} 
+
 {% endblock %}
