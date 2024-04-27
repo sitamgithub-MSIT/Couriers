@@ -15,10 +15,10 @@
       href="{% static 'styles/base.css' %}"
     />
 
-    {% load bootstrap5 %} 
-    {% bootstrap_css %} 
-    {% bootstrap_javascript %} 
-    
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
     {% block head %} {% endblock %}
   </head>
 
@@ -72,9 +72,70 @@
     </nav>
 
     {% block content %}
-    <!-- Blog content goes here -->
+    <!-- Content goes here -->
     {% endblock %}
 
     <footer class="text-center mt-5">&copy; 2024 Couriers</footer>
+
+    <!-- Include Toastify library -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <style>
+      /* Customize the notification style */
+      .toastify {
+        font-family: Arial, sans-serif;
+        border-radius: 20px; /* Rounded corners */
+        padding: 15px; /* Adjusted padding */
+        margin-bottom: 10px;
+        width: 300px;
+        text-align: center;
+        position: fixed;
+        top: 20px; /* Adjust top position as needed */
+        right: 20px; /* Adjust right position as needed */
+        z-index: 9999; /* Ensure the notifications appear on top */
+        animation: slideInUp 0.5s ease; /* Add animation */
+      }
+
+      /* Customize the notification colors based on type */
+      .toastify.success {
+        color: #006400; /* Green text for success */
+      }
+
+      .toastify.error {
+        color: #8b0000; /* Red text for error */
+      }
+
+      /* Define animation keyframes */
+      @keyframes slideInUp {
+        from {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
+
+    <script>
+      // Function to show toaster notification
+      function showToast(message, type) {
+        Toastify({
+          text: message,
+          duration: 3000, // Notification duration in milliseconds
+          close: true, // Whether to enable close button
+          backgroundColor: "#cccccc", // background color for all notifications
+          className: "toastify " + type, // Add custom class for styling
+        }).showToast();
+      }
+
+      // Call this function whenever you need to show a notification
+      {% if messages %}
+      {% for message in messages %}
+        showToast("{{ message }}", "{{ message.tags }}");
+      {% endfor %}
+      {% endif %}
+    </script>
   </body>
 </html>

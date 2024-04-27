@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from . import forms
 
 # Create your views here.
@@ -44,6 +45,8 @@ def customerprofileview(request):
         if user_form.is_valid() and customer_form.is_valid():
             user_form.save()
             customer_form.save()
+
+            messages.success(request, "Profile updated successfully! ")
             return redirect(reverse("customer:customerprofileview"))
 
             
