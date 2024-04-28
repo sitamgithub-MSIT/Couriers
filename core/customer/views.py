@@ -5,12 +5,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.conf import settings
+
+# Firebase imports
+import firebase_admin
+from firebase_admin import credentials, auth
 
 # Import the forms module
 from . import forms
 
 # Create your views here.
 
+cred = credentials.Certificate(settings.FIREBASE_ADMIN_SDK_CONFIG)
+firebase_admin.initialize_app(cred)
 
 @login_required()
 def customerhomeview(request):
@@ -65,6 +72,13 @@ def customerprofileview(request):
                 update_session_auth_hash(request, user)
                 messages.success(request, "Password updated successfully! ")
                 return redirect(reverse("customer:customerprofileview"))
+            
+        elif request.POST.get("action") == "update_phone_number":
+            firebase_user = auth.verify_id_token(request.POST.get("id_token"))
+
+            request.user.customer.phone_number = firebase_user['phone_number']
+            request.user.customer.save()
+            return redirect(reverse("customer:customerprofileview"))
 
     return render(
         request,

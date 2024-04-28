@@ -108,3 +108,6 @@ socials-env/
 
 # Mac OS
 .DS_Store
+
+# Firebase files
+couriers-firebase-adminsdk.json

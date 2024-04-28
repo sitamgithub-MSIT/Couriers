@@ -27,7 +27,7 @@ load_dotenv()
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = []
 
@@ -158,3 +158,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = "Couriers <os.environ.get('EMAIL_HOST_USER')>"
+
+FIREBASE_ADMIN_SDK_CONFIG = os.path.join(BASE_DIR, "couriers-firebase-adminsdk.json")

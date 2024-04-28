@@ -1,5 +1,5 @@
-{% extends 'core/customer/base.html' %} 
-{% block title %}Profile | {% endblock %} 
+{% extends 'core/customer/base.html' %}
+{% block title %}Profile | {% endblock %}
 
 {% load bootstrap5 %}
 
@@ -22,8 +22,8 @@
 <div class="card bg-white mt-2 mb-5">
   <div class="card-body">
     <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %} 
-      {% bootstrap_form user_form %} 
+      {% csrf_token %}
+      {% bootstrap_form user_form %}
       {% bootstrap_form customer_form %}
       <input type="hidden" name="action" value="update_profile" />
       <button type="submit" class="btn btn-primary">Update</button>
@@ -35,7 +35,7 @@
 <div class="card bg-white mt-2 mb-5">
   <div class="card-body">
     <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %} 
+      {% csrf_token %}
       {% bootstrap_form password_form %}
       <input type="hidden" name="action" value="update_password" />
       <button type="submit" class="btn btn-primary">Update</button>
@@ -75,9 +75,33 @@
     measurementId: "firebase-measurement-id",
   };
 
+  function onVerify(idToken) {
+    const form = document.createElement("form");
+    form.method = "POST";
+
+    const input1 = document.createElement("input");
+    input1.name = "id_token";
+    input1.value = idToken;
+    form.appendChild(input1);
+
+    const input2 = document.createElement("input");
+    input2.name = "action";
+    input2.value = "update_phone_number";
+    form.appendChild(input2);
+
+    const input3 = document.createElement("input");
+    input3.name = "csrfmiddlewaretoken";
+    input3.value = "{{ csrf_token }}";
+    form.appendChild(input3);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    'size': 'invisible',
+  });
 
   $("#get-code button").click(function () {
     const phoneNumber = $("#get-code input").val();
@@ -100,13 +124,13 @@
 
   $("#verify-code button").click(function () {
     const code = $("#verify-code input").val();
-    //console.log(code);
+    console.log(code);
     confirmationResult.confirm(code).then((result) => {
     // User signed in successfully.
     const user = result.user;
     console.log(user.phoneNumber);
     user.getIdToken().then((idToken) => {
-      console.log(idToken);
+      onVerify(idToken);
     });
     }).catch((error) => {
     // User couldn't sign in (bad verification code?)
@@ -115,8 +139,8 @@
   });
 </script>
 
-{% endblock %} 
+{% endblock %}
 
-{% block footer %} 
+{% block footer %}
 
 {% endblock %}
