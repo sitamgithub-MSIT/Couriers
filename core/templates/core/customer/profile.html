@@ -14,7 +14,7 @@
   crossorigin="anonymous"
 ></script>
 
-{% endblock %} 
+{% endblock %}
 
 {% block main %}
 
@@ -48,7 +48,10 @@
   <div class="card-body">
     <div id="recaptcha-container"></div>
 
-    <div id="get-code" class="input-group mb-3">
+    <div
+      id="get-code"
+      class="input-group mb-3 {% if request.user.customer.phone_number %}d-none{% endif %}"
+    >
       <input type="text" class="form-control" placeholder="Your phone number" />
       <div class="input-group-append">
         <button class="btn btn-primary" type="button">Send Code</button>
@@ -59,6 +62,21 @@
       <input type="text" class="form-control" placeholder="Verification code" />
       <div class="input-group-append">
         <button class="btn btn-primary" type="button">Verify Code</button>
+      </div>
+    </div>
+
+    <div
+      id="change-phone-number"
+      class="input-group mb-3 {% if not request.user.customer.phone_number %}d-none{% endif %}"
+    >
+      <input
+        type="text"
+        class="form-control"
+        disabled
+        value="{{ request.user.customer.phone_number }}"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button">Change</button>
       </div>
     </div>
   </div>
@@ -99,43 +117,55 @@
   }
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-    'size': 'invisible',
-  });
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "invisible",
+    }
+  );
 
   $("#get-code button").click(function () {
     const phoneNumber = $("#get-code input").val();
-    console.log(phoneNumber);
 
-    firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
-    .then((confirmationResult) => {
-      // SMS sent. Prompt user to type the code from the message, then sign the
-      // user in with confirmationResult.confirm(code).
-      console.log(confirmationResult);
-      window.confirmationResult = confirmationResult;
+    firebase
+      .auth()
+      .signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+      .then((confirmationResult) => {
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        window.confirmationResult = confirmationResult;
 
-      $("#get-code").addClass("d-none");
-      $("#verify-code").removeClass("d-none");
-    }).catch((error) => {
-      // Error; SMS not sent
-      alert(error.message);
-    });
+        $("#get-code").addClass("d-none");
+        $("#verify-code").removeClass("d-none");
+      })
+      .catch((error) => {
+        // Error; SMS not sent
+        alert(error.message);
+      });
   });
 
   $("#verify-code button").click(function () {
     const code = $("#verify-code input").val();
-    console.log(code);
-    confirmationResult.confirm(code).then((result) => {
-    // User signed in successfully.
-    const user = result.user;
-    console.log(user.phoneNumber);
-    user.getIdToken().then((idToken) => {
-      onVerify(idToken);
-    });
-    }).catch((error) => {
-    // User couldn't sign in (bad verification code?)
-    alert(error.message);
-    });
+
+    confirmationResult
+      .confirm(code)
+      .then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+
+        user.getIdToken().then((idToken) => {
+          onVerify(idToken);
+        });
+      })
+      .catch((error) => {
+        // User couldn't sign in (bad verification code?)
+        alert(error.message);
+      });
+  });
+
+  $("#change-phone-number button").click(function () {
+    $("#change-phone-number").addClass("d-none");
+    $("#get-code").removeClass("d-none");
   });
 </script>
 
