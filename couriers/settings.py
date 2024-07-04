@@ -160,3 +160,6 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = "Couriers <os.environ.get('EMAIL_HOST_USER')>"
 
 FIREBASE_ADMIN_SDK_CONFIG = os.path.join(BASE_DIR, "couriers-firebase-adminsdk.json")
+
+STRIPE_API_PUBLIC_KEY = "pk_test_51PAnaISGynyOh0iqsviFSHm9Maeoww9NYwC85TCZkKtoGde8GZDrxW34rkjbXLZFAgp0T0TFC4BfQnoc4FfaL3VM00xn5haGJD"
+STRIPE_API_PRIVATE_KEY = os.environ.get("STRIPE_API_PRIVATE_KEY")
